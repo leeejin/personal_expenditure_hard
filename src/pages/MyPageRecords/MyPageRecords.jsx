@@ -1,13 +1,16 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useLoaderData } from "react-router-dom";
 import { popupOpen } from "../../redux/reducers/popup.reducer";
+import { modifyProfile } from "../../redux/reducers/user.reducer";
 import api from "../../util/api/api";
 
 function MyPageRecords() {
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const initialUser = useLoaderData();
+
   const { data: user = initialUser } = useQuery({
     queryKey: ["user"],
     queryFn: () => api.user.getUser(),
@@ -20,23 +23,23 @@ function MyPageRecords() {
     const formData = new FormData();
     formData.append("nickname", newNickname);
     formData.append("avatar", newAvatar);
-
-    if (user.nickname == newNickname || !newAvatar) {
-      dispatch(popupOpen({ message: "프로필을 변경해주세요" }));
-      return;
-    } else if (
-      newNickname.trim().length < 1 ||
-      newNickname.trim().length > 10
-    ) {
+    if (newNickname.trim().length < 1 || newNickname.trim().length > 10) {
       dispatch(popupOpen({ message: "닉네임은 1~10글자 내입니다" }));
       return;
     }
-    const response = await modifyUser(formData);
-    dispatch(popupOpen({ message: response.message }));
+    await modifyUser(formData);
   };
 
   const { mutateAsync: modifyUser } = useMutation({
     mutationFn: (variables) => api.user.modifyUser(variables),
+    onSuccess: (data) => {
+      dispatch(popupOpen({ message: data.message }));
+      dispatch(modifyProfile(data));
+      queryClient.invalidateQueries(["user"]);
+    },
+    onError: () => {
+      dispatch(popupOpen({ message: "프로필 업데이트에 실패했습니다" }));
+    },
   });
   return (
     <section className="c-container section">

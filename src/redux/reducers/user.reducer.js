@@ -19,8 +19,12 @@ const userSlice = createSlice({
       state.avatar = null;
       state.nickname = null;
     },
+    modifyProfile: (state, action) => {
+      state.avatar = action.payload.avatar;
+      state.nickname = action.payload.nickname;
+    },
   },
 });
-export const { logIn, logOut } = userSlice.actions;
+export const { logIn, logOut, modifyProfile } = userSlice.actions;
 
 export default userSlice.reducer;
