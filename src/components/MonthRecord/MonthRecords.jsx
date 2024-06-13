@@ -7,6 +7,7 @@ const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 function MonthRecords() {
   const selectedMonth = useSelector((state) => state.data.selectedMonth);
   const dispatch = useDispatch();
+
   const handleChangeDate = useCallback(
     (month) => {
       dispatch(changeData(month));

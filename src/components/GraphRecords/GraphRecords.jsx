@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import useGetRecords from "../../pages/HomeRecord/useGetRecords";
 
 const colors = [
   "bg-blue-color",
@@ -34,8 +34,8 @@ const summarizeExpenses = (expenses) => {
     : sortedSummary;
 };
 
-function GraphRecords({ records }) {
-  const selectedMonth = useSelector((state) => state.data.selectedMonth);
+function GraphRecords() {
+  const { selectedMonth, records, error, isLoading } = useGetRecords();
   const arr = summarizeExpenses(records);
 
   const handleTotalCost = () => {
@@ -54,6 +54,9 @@ function GraphRecords({ records }) {
       return total;
     }
   };
+  if (error)
+    return <div className="section">데이터 불러오는데 실패했습니다</div>;
+  if (isLoading) return <div className="section">로딩중입니다</div>;
 
   return (
     <>
