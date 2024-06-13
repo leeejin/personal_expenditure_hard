@@ -36,6 +36,8 @@ class UserAPI {
   async logInUser(userData) {
     const response = await this.#axios.post("/login?expiresIn=10m", userData);
     const data = response.data;
+    this.#accessToken = data.accessToken;
+    localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
     return data;
   }
 

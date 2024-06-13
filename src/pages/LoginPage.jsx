@@ -29,7 +29,6 @@ function LoginPage() {
       return;
     }
     const response = await logInUser(formData);
-    localStorage.setItem("accessToken", JSON.stringify(response.accessToken));
 
     dispatch(logIn(response));
   };
