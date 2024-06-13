@@ -4,7 +4,7 @@ import UserAPI from "./user.api";
 
 export const BASE_URL = "https://moneyfulpublicpolicy.co.kr";
 
-export const RECORD_URL = "http://localhost:5002";
+export const RECORD_URL = "https://gray-fuzzy-bear.glitch.me";
 class API {
   #baseURL = BASE_URL;
   #recordURL = RECORD_URL;
