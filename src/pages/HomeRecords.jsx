@@ -29,10 +29,6 @@ function HomeRecords() {
     },
   });
 
-  if (isLoading) return <div className="section">Loading...</div>;
-  if (error)
-    return <div className="section">데이터 불러오는데 실패했습니다</div>;
-
   return (
     <>
       <div className="section">
@@ -43,13 +39,21 @@ function HomeRecords() {
         <MonthRecord records={records} />
       </div>
 
-      <div className="section">
-        <GraphRecords records={records} />
-      </div>
+      {error ? (
+        <div className="section">데이터 불러오는데 실패했습니다</div>
+      ) : isLoading ? (
+        <div className="section">로딩중입니다</div>
+      ) : (
+        <>
+          <div className="section">
+            <GraphRecords records={records} />
+          </div>
 
-      <div className="section">
-        <FooterRecords records={records} />
-      </div>
+          <div className="section">
+            <FooterRecords records={records} />
+          </div>
+        </>
+      )}
     </>
   );
 }
