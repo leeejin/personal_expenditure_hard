@@ -1,0 +1,85 @@
+{
+  "expenses": [
+    {
+      "id": "46869445-5f9c-4650-941f-41bd9457bc07",
+      "month": 1,
+      "date": "2024-01-03",
+      "item": "개인사업",
+      "amount": 1000000,
+      "description": "테슬라 모델 3",
+      "createdBy": "Musk"
+    },
+    {
+      "id": "a5c0d8de-d010-4d07-9934-29765051a7ea",
+      "month": 1,
+      "date": "2024-01-07",
+      "item": "개인사업",
+      "amount": 1000,
+      "description": "X(구 트위터)",
+      "createdBy": "Musk"
+    },
+    {
+      "id": "0d0a966e-5c35-4bf0-aca4-f2b1265a432d",
+      "month": 1,
+      "date": "2024-01-13",
+      "item": "식비",
+      "amount": 2000,
+      "description": "메가커피",
+      "createdBy": "Rosie"
+    },
+    {
+      "id": "9aba6d72-5ee7-4f02-a4d4-e8bbff9ded4b",
+      "month": 1,
+      "date": "2024-01-17",
+      "item": "식비",
+      "amount": 21000,
+      "description": "대광참치",
+      "createdBy": "Rosie"
+    },
+    {
+      "id": "b82b213e-8164-4c89-94b0-7246cdcfc4f9",
+      "month": 1,
+      "date": "2024-01-21",
+      "item": "식비",
+      "amount": 412000,
+      "description": "BBQ",
+      "createdBy": "Me"
+    },
+    {
+      "id": "d180194f-7c27-428a-8cd9-ad9114e58821",
+      "month": 1,
+      "date": "2024-01-22",
+      "item": "도서",
+      "amount": 23000,
+      "description": "리액트 마스터",
+      "createdBy": "Me"
+    },
+    {
+      "id": "0abf06c3-8f0e-4ea1-9691-7facab0a91cb",
+      "month": 1,
+      "date": "2024-01-30",
+      "item": "외식",
+      "amount": 100000,
+      "description": "세광양대창",
+      "createdBy": "Me"
+    },
+    {
+      "date": "2024-01-01",
+      "item": "집세",
+      "amount": 5675,
+      "description": "월세 지불 ?? ㅇㅋ ?",
+      "createdBy": "asd72621",
+      "month": 1,
+      "id": "cf6e1f8b-b0ad-4533-9ce7-134b26bc9efe"
+    },
+    {
+      "date": "2024-02-01",
+      "item": "교통비",
+      "amount": 5675,
+      "description": "월세 지불dddd",
+      "createdBy": "asd72621",
+      "month": 2,
+      "id": "26b99e32-3cfc-4d73-905c-8bd2eb45eb63"
+    }
+  ]
+}

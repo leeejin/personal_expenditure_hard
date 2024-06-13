@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background-color;
+}
+
+div {
+  @apply box-border;
+}
+
+input {
+  @apply p-2 border border-lightgrey-color rounded;
+}
+
+button {
+  @apply p-3 rounded-lg border-none min-w-[75px];
+}
+
+button:hover {
+  @apply cursor-pointer transition-all duration-500;
+}
+
+.section {
+  @apply bg-white-color rounded-2xl p-5 text-center;
+}
+
+.c-container {
+  @apply flex flex-wrap flex-col gap-5;
+}
+.r-container {
+  @apply flex flex-wrap flex-row gap-2;
+}
+.bgcolor-blue {
+  @apply bg-blue-color hover:bg-darkblue-color text-white-color;
+}
+.bgcolor-grey {
+  @apply bg-grey-color hover:bg-darkgrey-color text-white-color;
+}
+.bgcolor-red {
+  @apply bg-red-color hover:bg-darkred-color text-white-color;
+}
+.bgcolor-transparent {
+  @apply bg-transparent text-white-color;
+}
+.bgcolor-darkgrey {
+  @apply bg-darkgrey-color hover:bg-black-color text-white-color;
+}
