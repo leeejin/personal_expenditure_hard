@@ -62,7 +62,7 @@ function SignupPage() {
 
   return (
     <section className="c-container section">
-      <h1>회원가입</h1>
+      <h1 className="text-2xl font-bold">회원가입</h1>
       <h1>아이디</h1>
       <input
         type="text"
