@@ -17,7 +17,11 @@ function Menubar() {
     dispatch(popupOpen({ message: "로그아웃 되었습니다" }));
     navigate("/");
   };
-
+  const handleNavigate = () => {
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+    if (accessToken) navigate(`/mypage/${currentUser.id}`);
+    else navigate(0);
+  };
   useEffect(() => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const getUserAPI = async () => {
@@ -39,10 +43,7 @@ function Menubar() {
         HOME
       </button>
       {currentUser.id && (
-        <button
-          className="bgcolor-transparent"
-          onClick={() => navigate(`/mypage/${currentUser.id}`)}
-        >
+        <button className="bgcolor-transparent" onClick={handleNavigate}>
           내 프로필
         </button>
       )}

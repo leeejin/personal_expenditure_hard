@@ -17,7 +17,7 @@ class UserAPI {
       return data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.error("토큰 검증 실패:", error.response.data.message);
+        localStorage.clear();
         return null;
       }
     }
