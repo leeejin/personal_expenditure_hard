@@ -16,7 +16,6 @@ function Menubar() {
     dispatch(logOut());
     dispatch(popupOpen({ message: "로그아웃 되었습니다" }));
     navigate("/");
-    navigate(0);
   };
 
   useEffect(() => {

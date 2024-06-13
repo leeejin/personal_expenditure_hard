@@ -1,12 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { popupOpen } from "../redux/reducers/popup.reducer";
-import api from "../util/api/api";
+import { useLoaderData } from "react-router-dom";
+import { popupOpen } from "../../redux/reducers/popup.reducer";
+import api from "../../util/api/api";
 
 function MyPageRecords() {
   const dispatch = useDispatch();
-  const { data: user = {} } = useQuery({
+  const initialUser = useLoaderData();
+  const { data: user = initialUser } = useQuery({
     queryKey: ["user"],
     queryFn: () => api.user.getUser(),
   });
@@ -19,7 +21,7 @@ function MyPageRecords() {
     formData.append("nickname", newNickname);
     formData.append("avatar", newAvatar);
 
-    if (user.nickname == newNickname && !newAvatar) {
+    if (user.nickname == newNickname || !newAvatar) {
       dispatch(popupOpen({ message: "프로필을 변경해주세요" }));
       return;
     } else if (

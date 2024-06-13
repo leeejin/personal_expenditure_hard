@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../components/Modal";
-import { modalClose, modalOpen } from "../redux/reducers/modal.reducer";
-import { popupOpen } from "../redux/reducers/popup.reducer";
-import api from "../util/api/api";
-import { isDateValid } from "../util/date";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import Modal from "../../components/Modal";
+import { modalClose, modalOpen } from "../../redux/reducers/modal.reducer";
+import { popupOpen } from "../../redux/reducers/popup.reducer";
+import api from "../../util/api/api";
+import { isDateValid } from "../../util/date";
 
 const DEL_MESSAGE = "삭제하시겠습니까 ?";
 const MODI_MESSAGE = "수정하시겠습니까 ?";
@@ -16,6 +16,8 @@ function DetailRecord() {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const { recordsId } = useParams();
+  const initialRecord = useLoaderData();
+
   const date = useRef("");
   const item = useRef("");
   const amount = useRef(0);
@@ -23,19 +25,15 @@ function DetailRecord() {
   const modal = useSelector((state) => state.modal);
   const userInfo = useSelector((state) => state.user.id);
 
-  const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   const {
-    data: records = {},
+    data: record = initialRecord,
     error,
     isLoading,
   } = useQuery({
     queryKey: ["record", recordsId],
     queryFn: async () => {
-      if (accessToken) {
-        const response = await api.records.getRecord(recordsId);
-        return response;
-      }
-      return navigate(-1);
+      const response = await api.records.getRecord(recordsId);
+      return response;
     },
   });
   const { mutateAsync: handleDeleteRecord } = useMutation({
@@ -109,9 +107,10 @@ function DetailRecord() {
     },
     [dispatch]
   );
-  if (isLoading) return <div className="section">로딩중입니다</div>;
+
   if (error)
     return <div className="section">데이터 불러오는데 실패했습니다</div>;
+  if (isLoading) return <div className="section">로딩중입니다</div>;
   return (
     <section className="section">
       {modal.isVisible && <Modal handleConfirm={handleConfirm} />}
@@ -123,7 +122,7 @@ function DetailRecord() {
             id="date"
             ref={date}
             placeholder="YYYY-MM-DD"
-            defaultValue={records.date}
+            defaultValue={record.date}
           />
         </div>
         <div className="c-container text-left">
@@ -133,7 +132,7 @@ function DetailRecord() {
             id="item"
             ref={item}
             placeholder="지출 항목"
-            defaultValue={records.item}
+            defaultValue={record.item}
           />
         </div>
         <div className="c-container text-left">
@@ -143,7 +142,7 @@ function DetailRecord() {
             id="amount"
             ref={amount}
             placeholder="지출 금액"
-            defaultValue={records.amount}
+            defaultValue={record.amount}
           />
         </div>
         <div className="c-container text-left">
@@ -153,7 +152,7 @@ function DetailRecord() {
             id="description"
             ref={description}
             placeholder="지출 내용"
-            defaultValue={records.description}
+            defaultValue={record.description}
           />
         </div>
         <div className="r-container text-left">

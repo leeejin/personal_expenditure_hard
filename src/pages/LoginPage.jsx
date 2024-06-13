@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,42 +7,43 @@ import { logIn } from "../redux/reducers/user.reducer";
 import api from "../util/api/api";
 
 function LoginPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef([]);
   const handleLogin = async () => {
-    try {
-      const formData = {
-        id: formRef.current[0].value,
-        password: formRef.current[1].value,
-      };
-      const loginError = {
-        id: !formData.id.trim().length,
-        password: !formData.password.trim().length,
-      };
-      if (loginError.id || loginError.password) {
-        dispatch(
-          popupOpen({
-            message: "아이디와 비밀번호를 확인해주세요",
-          })
-        );
-        return;
-      }
-      const response = await logInUser(formData);
-      localStorage.setItem("accessToken", JSON.stringify(response.accessToken));
-
-      dispatch(logIn(response));
-      dispatch(popupOpen({ message: "로그인 성공되었습니다" }));
-
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      dispatch(popupOpen({ message: "로그인 실패되었습니다" }));
+    const formData = {
+      id: formRef.current[0].value,
+      password: formRef.current[1].value,
+    };
+    const loginError = {
+      id: !formData.id.trim().length,
+      password: !formData.password.trim().length,
+    };
+    if (loginError.id || loginError.password) {
+      dispatch(
+        popupOpen({
+          message: "아이디와 비밀번호를 확인해주세요",
+        })
+      );
+      return;
     }
+    const response = await logInUser(formData);
+    localStorage.setItem("accessToken", JSON.stringify(response.accessToken));
+
+    dispatch(logIn(response));
   };
 
   const { mutateAsync: logInUser } = useMutation({
     mutationFn: (formData) => api.user.logInUser(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user"]);
+      dispatch(popupOpen({ message: "로그인 성공되었습니다" }));
+      navigate("/");
+    },
+    onError: () => {
+      dispatch(popupOpen({ message: "로그인 실패되었습니다" }));
+    },
   });
   return (
     <section className="c-container section">

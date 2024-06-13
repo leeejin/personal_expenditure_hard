@@ -1,16 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import AddRecord from "../components/AddRecord/AddRecord";
-import FooterRecords from "../components/FooterRecords/FooterRecords";
-import GraphRecords from "../components/GraphRecords/GraphRecords";
-import MonthRecord from "../components/MonthRecord";
-import api from "../util/api/api";
+import { useLoaderData } from "react-router-dom";
+import AddRecord from "../../components/AddRecord/AddRecord";
+import FooterRecords from "../../components/FooterRecords/FooterRecords";
+import GraphRecords from "../../components/GraphRecords/GraphRecords";
+import MonthRecord from "../../components/MonthRecord";
+import api from "../../util/api/api";
 
 function HomeRecords() {
   const selectedMonth = useSelector((state) => state.data.selectedMonth);
   const userInfo = useSelector((state) => state.user.id);
+  const initialRecords = useLoaderData();
   const {
-    data: records,
+    data: records = initialRecords,
     error,
     isLoading,
   } = useQuery({
