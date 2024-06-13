@@ -1,4 +1,4 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import api from "../../util/api/api";
 import { isDateValid } from "../../util/date";
 
 function AddRecord() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const date = useRef("");
@@ -66,7 +66,6 @@ function AddRecord() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["records"]);
-      navigate(0);
       dispatch(
         popupOpen({
           message: "데이터를 보내는데 성공했습니다",

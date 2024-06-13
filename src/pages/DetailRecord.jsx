@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ const MODI_MESSAGE = "수정하시겠습니까 ?";
 function DetailRecord() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const { recordsId } = useParams();
   const date = useRef("");
   const item = useRef("");
@@ -21,7 +22,7 @@ function DetailRecord() {
   const description = useRef("");
   const modal = useSelector((state) => state.modal);
   const userInfo = useSelector((state) => state.user.id);
-  const queryClient = new QueryClient();
+
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   const {
     data: records = {},
@@ -41,20 +42,19 @@ function DetailRecord() {
     mutationFn: (variables) => api.records.deleteRecord(variables),
     onSuccess: () => {
       queryClient.invalidateQueries(["records"]);
-      navigate(0);
+      navigate("/");
     },
   });
   const { mutateAsync: handleModifyRecord } = useMutation({
     mutationFn: (variables) => api.records.modifyRecord(variables),
     onSuccess: () => {
       queryClient.invalidateQueries(["records"]);
-      navigate(0);
+      navigate("/");
     },
   });
 
   /** 수정함수 */
   const handleModify = () => {
-    //수정할 데이터
     const formData = {
       id: recordsId,
       date: date.current.value.trim(),
@@ -85,12 +85,10 @@ function DetailRecord() {
     }
 
     handleModifyRecord(formData);
-    navigate("/");
   };
   /** 삭제함수 */
   const handleDelete = () => {
     handleDeleteRecord(recordsId);
-    navigate("/");
   };
   /** 뒤로가기함수 */
   const handleBack = useCallback(() => {
