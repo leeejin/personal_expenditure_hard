@@ -13,6 +13,7 @@ class UserAPI {
           Authorization: `Bearer ${this.#accessToken}`,
         },
       });
+
       const data = response.data;
       return data;
     } catch (error) {
