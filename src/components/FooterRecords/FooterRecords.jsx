@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useGetRecords from "../../pages/HomeRecord/useGetRecords";
 
 function FooterRecords() {
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state.user.id);
   const { records, error, isLoading } = useGetRecords();
   const handleGoDetail = (recordId) => {
     navigate(`/records/${recordId}`);
@@ -14,7 +12,7 @@ function FooterRecords() {
     return <div className="section">데이터 불러오는데 실패했습니다</div>;
   if (isLoading) return <div className="section">로딩중입니다</div>;
   return (
-    <div className="container section">
+    <div className="c-container section">
       {records.length ? (
         records.map((data) => (
           <div
@@ -31,7 +29,7 @@ function FooterRecords() {
                 {data.description.length > 42
                   ? data.description.slice(0, 43) + "..."
                   : data.description}
-                (by {userInfo})
+                (by {data.createdBy})
               </span>
             </div>
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -8,6 +8,7 @@ import api from "../../util/api/api";
 import { isDateValid } from "../../util/date";
 
 function AddRecord() {
+  const [isThrottled, setIsThrottled] = useState(false);
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,9 +22,19 @@ function AddRecord() {
     if (!userInfo) {
       dispatch(popupOpen({ message: "로그인이 필요한 서비스입니다" }));
       navigate("/login");
-
       return;
     }
+
+    if (isThrottled) {
+      dispatch(popupOpen({ message: "데이터를 보내는 중입니다" }));
+      return;
+    }
+
+    setIsThrottled(true);
+    setTimeout(() => {
+      setIsThrottled(false);
+    }, 5000);
+
     const formData = {
       id: uuidv4(),
       date: date.current.value.trim(),
