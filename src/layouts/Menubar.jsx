@@ -6,22 +6,6 @@ import { logIn, logOut } from "../redux/reducers/user.reducer";
 import DefaultImage from "../styles/images/default-profile.jpg";
 import api from "../util/api/api";
 
-const getUserAPI = async (dispatch) => {
-  const response = await api.user.getUser();
-
-  if (response == null) {
-    dispatch(logOut());
-    return;
-  }
-  dispatch(
-    logIn({
-      userId: response.id,
-      nickname: response.nickname,
-      avatar: response.avatar,
-    })
-  );
-};
-
 function Menubar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,18 +17,24 @@ function Menubar() {
     dispatch(popupOpen({ message: "로그아웃 되었습니다" }));
     navigate("/");
   };
-
   const handleNavigate = async () => {
-    const response = await getUserAPI(dispatch);
+    const response = await api.user.getUser();
     if (response != null) navigate(`/mypage/${currentUser.id}`);
-    else navigate(0);
+    else dispatch(logOut());
   };
-
   useEffect(() => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    if (accessToken) {
-      getUserAPI(dispatch);
-    }
+    const getUserAPI = async () => {
+      const response = await api.user.getUser();
+      dispatch(
+        logIn({
+          userId: response.id,
+          nickname: response.nickname,
+          avatar: response.avatar,
+        })
+      );
+    };
+    if (accessToken) getUserAPI();
   }, [dispatch]);
 
   return (

@@ -19,6 +19,7 @@ class UserAPI {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         localStorage.clear();
+        this.#accessToken = null;
         return null;
       }
     }
@@ -35,7 +36,7 @@ class UserAPI {
     }
   }
   async logInUser(userData) {
-    const response = await this.#axios.post("/login?expiresIn=10m", userData);
+    const response = await this.#axios.post("/login?expiresIn=10s", userData);
     const data = response.data;
     this.#accessToken = data.accessToken;
     localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
