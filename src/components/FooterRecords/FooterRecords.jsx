@@ -1,11 +1,17 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useGetRecords from "../../pages/HomeRecord/useGetRecords";
+import { logOut } from "../../redux/reducers/user.reducer";
+import api from "../../util/api/api";
 
 function FooterRecords() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { records, error, isLoading } = useGetRecords();
-  const handleGoDetail = (recordId) => {
-    navigate(`/records/${recordId}`);
+  const handleGoDetail = async (recordId) => {
+    const response = await api.user.getUser();
+    if (response != null) navigate(`/records/${recordId}`);
+    else dispatch(logOut());
   };
 
   if (error)
